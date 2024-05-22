@@ -1,0 +1,3 @@
+# Ignoring hello.py
+hello.py
+*.txt
