@@ -7,6 +7,11 @@ def add(a: float, b: float) -> float:
     return a + b
 
 
+def mul(a: float, b: float) -> float:
+    return a*b
+
+
 if __name__ == "__main__":
     print(divide(5, 10))
     print(add(5, 10))
+    print(mul(5, 10))
