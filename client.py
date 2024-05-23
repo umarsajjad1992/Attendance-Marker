@@ -1,10 +1,12 @@
 import requests
 
+session = requests.Session()
+
 def register(username, password):
     url = 'http://localhost:5001/register'
     data = {'username': username, 'password': password}
     try:
-        response = requests.post(url, json=data)
+        response = session.post(url, json=data)
         response.raise_for_status()
         print(response.json())
     except requests.exceptions.RequestException as e:
@@ -14,7 +16,7 @@ def login(username, password):
     url = 'http://localhost:5001/login'
     data = {'username': username, 'password': password}
     try:
-        response = requests.post(url, json=data)
+        response = session.post(url, json=data)
         response.raise_for_status()
         print(response.json())
     except requests.exceptions.RequestException as e:
@@ -23,7 +25,7 @@ def login(username, password):
 def logout():
     url = 'http://localhost:5001/logout'
     try:
-        response = requests.post(url)
+        response = session.post(url)
         response.raise_for_status()
         print(response.json())
     except requests.exceptions.RequestException as e:
@@ -32,16 +34,16 @@ def logout():
 def mark_attendance():
     url = 'http://localhost:5001/mark_attendance'
     try:
-        response = requests.post(url)
+        response = session.post(url)
         response.raise_for_status()
         print(response.json())
     except requests.exceptions.RequestException as e:
         print(f"Error: {e}")
 
 def get_attendance():
-    url = 'http://localhost:5000/attendance'
+    url = 'http://localhost:5001/attendance'
     try:
-        response = requests.get(url)
+        response = session.get(url)
         response.raise_for_status()
         attendance = response.json()
         for record in attendance:
