@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
-from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from flask_login import (LoginManager, UserMixin, login_user,
+                         login_required, logout_user, current_user)
 import sqlite3
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -11,8 +12,8 @@ login_manager.init_app(app)
 
 
 class User(UserMixin):
-    def __init__(self, id, username):
-        self.id = id
+    def __init__(self, userid, username):
+        self.id = userid
         self.username = username
 
 
@@ -38,6 +39,7 @@ def register():
         data = request.get_json()
         username = data.get('username')
         password = data.get('password')
+        role = data.get('role', 'user')  # default 'user' if role not provided
 
         if not username or not password:
             return jsonify({'error': 'Username and password are required'}), 400
@@ -45,8 +47,8 @@ def register():
         conn = connect_db()
         c = conn.cursor()
         try:
-            c.execute('INSERT INTO users (username, password) VALUES (?, ?)',
-                      (username, generate_password_hash(password)))
+            c.execute('INSERT INTO users (username, password, role) VALUES (?, ?, ?)',
+                      (username, generate_password_hash(password), role))
             conn.commit()
         except sqlite3.IntegrityError:
             conn.close()
